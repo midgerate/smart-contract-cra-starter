@@ -7,27 +7,24 @@ import { HashRouter as Router } from 'react-router-dom'
 
 import App from './App'
 import { WalletProvider } from './contexts/WalletContext'
-import { GlobalStateProvider } from './hooks/useGlobalState'
 import reportWebVitals from './reportWebVitals'
 import { theme } from './utils/theme'
 
 ReactDOM.render(
   <React.StrictMode>
-    <GlobalStateProvider>
-      <WalletProvider>
-        <Toaster
-          position="top-center"
-          toastOptions={{
-            duration: 3000,
-          }}
-        />
-        <Router>
-          <ChakraProvider theme={theme}>
-            <App />
-          </ChakraProvider>
-        </Router>
-      </WalletProvider>
-    </GlobalStateProvider>
+    <WalletProvider>
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 3000,
+        }}
+      />
+      <Router>
+        <ChakraProvider theme={theme}>
+          <App />
+        </ChakraProvider>
+      </Router>
+    </WalletProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )

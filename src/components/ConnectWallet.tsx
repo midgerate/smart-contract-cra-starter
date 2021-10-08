@@ -5,14 +5,8 @@ import { useWallet } from '../contexts/WalletContext'
 import { formatAddress } from '../utils/methods'
 import { Button } from './atoms'
 export const ConnectWallet: FC = () => {
-  const {
-    connectWallet,
-    isConnecting,
-    isConnected,
-    disconnect,
-    ensName,
-    address,
-  } = useWallet()
+  const { connectWallet, isConnecting, isConnected, disconnect, address } =
+    useWallet()
   return (
     <>
       {!isConnected && (
@@ -30,7 +24,7 @@ export const ConnectWallet: FC = () => {
       )}
       {isConnected && (
         <div className="flex items-center">
-          <div>{formatAddress(address, ensName)}</div>
+          <div>{formatAddress(address)}</div>
           <HiX onClick={() => disconnect()} />
         </div>
       )}

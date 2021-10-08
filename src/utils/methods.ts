@@ -57,7 +57,7 @@ export const formatToken = (
 
 export const formatAddress = (
   address: string | null | undefined,
-  ensName: string | null | undefined,
+  ensName?: string | null,
   chars = 4
 ): string => {
   if (ensName) return ensName

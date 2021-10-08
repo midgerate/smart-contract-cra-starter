@@ -1,7 +1,4 @@
-const {
-  REACT_APP_MAINNET_RPC: MAINNET_RPC,
-  REACT_APP_RINKEBY_RPC: RINKEBY_RPC,
-} = process.env
+const { REACT_APP_MATIC_RPC: MATIC_RPC } = process.env
 
 type CurrencyInfo = {
   [chainId: number]: {
@@ -11,13 +8,9 @@ type CurrencyInfo = {
 }
 
 export const NETWORK_CURRENCIES: CurrencyInfo = {
-  1: {
-    name: 'Ethereum',
-    symbol: 'ETH',
-  },
-  4: {
-    name: 'Ethereum',
-    symbol: 'ETH',
+  137: {
+    name: 'Matic',
+    symbol: 'MATIC',
   },
 }
 
@@ -26,28 +19,19 @@ type StringInfo = {
 }
 
 export const RPC_URLS: StringInfo = {
-  1: MAINNET_RPC ?? '',
-  4: RINKEBY_RPC ?? '',
+  137: MATIC_RPC ?? 'https://rpc-mainnet.maticvigil.com',
 }
 
 export const NETWORK_NAMES: StringInfo = {
-  1: 'ETH Mainnet',
-  4: 'Rinkeby Testnet',
+  137: 'Matic',
 }
 
 export const NETWORK_LABELS: StringInfo = {
-  1: 'Mainnet',
-  4: 'Rinkeby',
+  137: 'Matic',
 }
 
 export const EXPLORER_URLS: StringInfo = {
-  1: 'https://etherscan.io',
-  4: 'https://rinkeby.etherscan.io',
-}
-
-export const SUBGRAPH_URLS: StringInfo = {
-  // 1: '',
-  //4: '',
+  137: 'https://polygonscan.com',
 }
 
 export const COINGECKO_PRICE_API =
@@ -58,12 +42,10 @@ type CoingeckoTokenIdInfo = {
 }
 
 export const COINGECKO_TOKEN_ID: CoingeckoTokenIdInfo = {
-  DAI: 'dai',
-  ETH: 'ethereum',
-  USDC: 'usd-coin',
+  MATIC: 'matic-network',
 }
 
-export const SUPPORTED_NETWORKS: number[] = [4]
+export const SUPPORTED_NETWORKS: number[] = [137]
 
 export const DEFAULT_NETWORK = SUPPORTED_NETWORKS[0]
 

@@ -10,13 +10,10 @@ import React, {
 import { toast } from 'react-hot-toast'
 import Web3Modal from 'web3modal'
 
-import useGlobalState from '../hooks/useGlobalState'
-import { authenticateWallet, getExistingAuth } from '../web3/auth'
 import { DEFAULT_NETWORK, NETWORK_NAMES } from '../web3/constants'
 import { isSupportedChain } from '../web3/helpers'
 import { switchChainOnMetaMask } from '../web3/metamask'
 import { providerOptions } from '../web3/providerOptions'
-// import { connectUser } from '../api/usersApi'
 
 const web3Modal = new Web3Modal({
   cacheProvider: true,
@@ -28,8 +25,6 @@ export type WalletContextType = {
   provider: providers.Web3Provider | null | undefined
   chainId: number | null | undefined
   address: string | null | undefined
-  ensName: string | null | undefined
-  authToken: string | null | undefined
   connectWallet: () => Promise<void>
   disconnect: () => void
   isConnecting: boolean
@@ -41,8 +36,6 @@ export const WalletContext = createContext<WalletContextType>({
   provider: null,
   chainId: null,
   address: null,
-  authToken: null,
-  ensName: null,
   connectWallet: async () => {},
   disconnect: () => undefined,
   isConnecting: true,
@@ -50,23 +43,10 @@ export const WalletContext = createContext<WalletContextType>({
   isMetamask: false,
 })
 
-const getAuthToken = async (
-  ethersProvider: providers.Web3Provider | null
-): Promise<string | null> => {
-  if (!ethersProvider) return null
-  let token = await getExistingAuth(ethersProvider)
-  if (!token) {
-    token = await authenticateWallet(ethersProvider)
-  }
-  return token
-}
-
 type WalletStateType = {
   provider?: providers.Web3Provider | null
   chainId?: number | null
   address?: string | null
-  authToken?: string | null
-  ensName?: string | null
 }
 
 const isMetamaskProvider = (
@@ -74,15 +54,12 @@ const isMetamaskProvider = (
 ) => provider?.connection?.url === 'metamask'
 
 export const WalletProvider: React.FC = ({ children }) => {
-  const [{ provider, chainId, address, authToken, ensName }, setWalletState] =
+  const [{ provider, chainId, address }, setWalletState] =
     useState<WalletStateType>({})
 
-  const { loggedInUser, setLoggedInUser } = useGlobalState()
-
   const isConnected: boolean = useMemo(
-    () =>
-      !!provider && !!address && !!chainId && !!authToken && !!loggedInUser._id,
-    [provider, address, chainId, authToken, loggedInUser]
+    () => !!provider && !!address && !!chainId,
+    [provider, address, chainId]
   )
 
   const [isConnecting, setConnecting] = useState<boolean>(true)
@@ -91,43 +68,31 @@ export const WalletProvider: React.FC = ({ children }) => {
   const disconnect = useCallback(async () => {
     web3Modal.clearCachedProvider()
     setWalletState({})
-    setLoggedInUser(null)
-  }, [setLoggedInUser])
+  }, [])
 
-  const setWalletProvider = useCallback(
-    async (prov) => {
-      const ethersProvider = new providers.Web3Provider(prov)
+  const setWalletProvider = useCallback(async (provider) => {
+    const ethersProvider = new providers.Web3Provider(provider)
 
-      let network = Number(prov.chainId)
-      if (!isSupportedChain(network)) {
-        const success =
-          isMetamaskProvider(ethersProvider) &&
-          (await switchChainOnMetaMask(DEFAULT_NETWORK))
-        if (!success) {
-          const errorMsg = `Network not supported, please switch to ${NETWORK_NAMES[DEFAULT_NETWORK]}`
-          toast.error(errorMsg)
-          throw new Error(errorMsg)
-        }
-        network = DEFAULT_NETWORK
+    let network = Number(provider.chainId)
+    if (!isSupportedChain(network)) {
+      const success =
+        isMetamaskProvider(ethersProvider) &&
+        (await switchChainOnMetaMask(DEFAULT_NETWORK))
+      if (!success) {
+        const errorMsg = `Network not supported, please switch to ${NETWORK_NAMES[DEFAULT_NETWORK]}`
+        toast.error(errorMsg)
+        throw new Error(errorMsg)
       }
+      network = DEFAULT_NETWORK
+    }
 
-      const signerAddress = await ethersProvider.getSigner().getAddress()
-      const signerName = await ethersProvider.lookupAddress(signerAddress)
-      const signerAuthToken = await getAuthToken(ethersProvider)
-      // when you want to store user's info on database
-      // const [userResponse] = await Promise.all([connectUser()])
-      // const userData = await userResponse.json()
-      setLoggedInUser({ _id: signerAddress })
-      setWalletState({
-        provider: ethersProvider,
-        chainId: network,
-        address: signerAddress,
-        authToken: signerAuthToken,
-        ensName: signerName,
-      })
-    },
-    [setLoggedInUser]
-  )
+    const signerAddress = await ethersProvider.getSigner().getAddress()
+    setWalletState({
+      provider: ethersProvider,
+      chainId: network,
+      address: signerAddress,
+    })
+  }, [])
 
   const connectWallet = useCallback(async () => {
     try {
@@ -169,13 +134,11 @@ export const WalletProvider: React.FC = ({ children }) => {
         provider,
         address,
         chainId,
-        authToken,
         connectWallet,
         isConnected,
         isConnecting,
         disconnect,
         isMetamask,
-        ensName,
       }}
     >
       {children}
