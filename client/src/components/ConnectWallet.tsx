@@ -1,7 +1,7 @@
+import { useWallet } from '@raidguild/quiver'
 import { FC } from 'react'
 import { HiX } from 'react-icons/hi'
 
-import { useWallet } from '../contexts/WalletContext'
 import { formatAddress } from '../utils/methods'
 import { Button } from './atoms'
 export const ConnectWallet: FC = () => {

@@ -3,8 +3,8 @@ import { SWRConfig } from 'swr'
 
 import './App.css'
 import Routes from './Routes'
-import logo from './assets/img/logo.svg'
 import { ConnectWallet } from './components'
+import { H1 } from './components/atoms'
 function App() {
   return (
     <SWRConfig
@@ -19,7 +19,7 @@ function App() {
           <div className="p-4 flex w-full justify-between">
             <div>
               <Link to="/">
-                <img src={logo} alt="ufo" width="74px" height="46px" />
+                <H1>Logo</H1>
               </Link>
             </div>
             <div className="flex-1" />
