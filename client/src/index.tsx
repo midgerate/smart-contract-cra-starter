@@ -1,16 +1,13 @@
-import { ChakraProvider } from '@chakra-ui/react'
 import { WalletProvider, NetworkConfig } from '@raidguild/quiver'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import toast, { Toaster } from 'react-hot-toast'
 import { HashRouter as Router } from 'react-router-dom'
 import { IProviderOptions } from 'web3modal'
 
 import App from './App'
 import reportWebVitals from './reportWebVitals'
-import { theme } from './utils/theme'
 
 const SUPPORTED_NETWORKS: NetworkConfig = {
   '0x1': {
@@ -74,12 +71,6 @@ const DEFAULT_CHAIN_ID = '0x539' // Used to switch to if the user is on an unsup
 
 ReactDOM.render(
   <React.StrictMode>
-    <Toaster
-      position="top-center"
-      toastOptions={{
-        duration: 3000,
-      }}
-    />
     <WalletProvider
       web3modalOptions={web3modalOptions}
       networks={SUPPORTED_NETWORKS}
@@ -88,16 +79,14 @@ ReactDOM.render(
       // Optional but useful to handle events.
       handleModalEvents={(eventName, error) => {
         if (error) {
-          toast.error(error.message)
+          console.error(error.message)
         }
 
         console.log(eventName)
       }}
     >
       <Router>
-        <ChakraProvider theme={theme}>
-          <App />
-        </ChakraProvider>
+        <App />
       </Router>
     </WalletProvider>
   </React.StrictMode>,

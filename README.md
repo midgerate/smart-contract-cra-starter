@@ -1,14 +1,12 @@
 # CRA Started with Smart Contract development.
 
-Includes a working demo of client and smart contract integrated together.
+Includes a working demo of client and smart contract integrated together. Clean with no additional dependencies other than developer tools.
 
 ## Client
 
 - Create React App
-- Styles - Tailwind + Chakra UI You can delete chakra or tailwind. Up to you
 - Web3 - Quiver (https://www.npmjs.com/package/@raidguild/quiver)
 - DX - Typescript, eslint, prettier
-- Utilities - Moment.js, react-hot-toast, lodash, date-fns, etc.
 
 ## Smart Contract
 
@@ -22,9 +20,11 @@ Includes a working demo of client and smart contract integrated together.
 
 1. Clone the repo
 2. In both sc and client folders install deps (yarn install)
-3. In the sc directory, look at the package.json and remove the network in the deploy and verify scripts to deploy on hardhart.
-4. Run a hardhat node (npx hardhat node)
-5. Deploy to hardhat
-6. In the client folder, start the application
-7. In the Home page /components/pages/Home enter the deployed contract address
-8. Now you should be able to connect and see the message in the UI.
+3. In the sc directory -
+   - Run a hardhat node `yarn hardhat`
+   - Deploy to hardhat network `yarn deploy`
+   - Copy the address from console.
+4. In the client folder
+   - Start application `yarn start`
+   - In the Home page /components/pages/Home enter the deployed contract address
+5. Now you should be able to connect and see the message in the UI.

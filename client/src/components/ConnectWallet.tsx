@@ -1,16 +1,14 @@
 import { useWallet } from '@raidguild/quiver'
 import { FC } from 'react'
-import { HiX } from 'react-icons/hi'
 
 import { formatAddress } from '../utils/methods'
-import { Button } from './atoms'
 export const ConnectWallet: FC = () => {
   const { connectWallet, isConnecting, isConnected, disconnect, address } =
     useWallet()
   return (
     <>
       {!isConnected && (
-        <Button
+        <button
           id="button"
           disabled={isConnecting}
           onClick={() => !isConnected && connectWallet()}
@@ -20,12 +18,12 @@ export const ConnectWallet: FC = () => {
             : isConnected
             ? 'Connected'
             : 'Connect'}
-        </Button>
+        </button>
       )}
       {isConnected && (
         <div className="flex items-center">
           <div>{formatAddress(address)}</div>
-          <HiX onClick={() => disconnect()} />
+          <button onClick={() => disconnect()}>Disconnect</button>
         </div>
       )}
     </>

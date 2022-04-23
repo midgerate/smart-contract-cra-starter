@@ -1,6 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
-import moment, { Moment } from 'moment'
 import {
   Children,
   ElementType,
@@ -9,16 +8,6 @@ import {
   ReactNode,
 } from 'react'
 
-export const momentUTC = moment.utc
-
-export const formatDate = (
-  date: string | Date | undefined | Moment
-): string => {
-  if (date === undefined) {
-    return ''
-  }
-  return momentUTC(date).format('DD-MMM-YYYY')
-}
 // Join classes
 export const classNames = (...classes: string[]): string => {
   return classes.filter(Boolean).join(' ')
