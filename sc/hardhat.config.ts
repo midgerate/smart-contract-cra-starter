@@ -2,6 +2,7 @@ import '@typechain/hardhat'
 import '@nomiclabs/hardhat-waffle'
 import '@nomiclabs/hardhat-etherscan'
 import { HardhatUserConfig } from 'hardhat/types'
+import 'dotenv/config'
 
 // Currently we do not have waffle. We might need it later for better testing support
 
